@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router';
 export default function useCompanies(){
 
     const companies = ref([])
+    const company = ref([])
     const errors = ref('')
     const router = useRouter()
 
@@ -12,6 +13,12 @@ export default function useCompanies(){
        let response =  await axios.get('/api/companies')
 
        companies.value = response.data.data
+    }
+
+    const getCompany = async (id) => {
+        let response = await axios.get(`/api/companies/${id}`)
+
+        company.value = response.data.data
     }
 
     const storeCompany = async (data) => {
@@ -28,11 +35,25 @@ export default function useCompanies(){
             }
         }
     }
+    const updateCompany = async (id) => {
+        errors.value = ''
+        try {
+            await axios.put(`/api/companies/${id}`, company.value)
+            await router.push({name: 'companies.index'})
+
+        } catch (error) {
+            if(error.response.status === 422){
+                for(const key in error.response.data.errors){
+                    errors.value += error.response.data.errors[key][0] + ' '
+                }
+            }
+        }
+    }
     const destroyCompany = async (id) => {
         await axios.delete(`/api/companies/${id}`)
     }
 
     return {
-        companies, getCompanies, destroyCompany, storeCompany, errors
+        companies, company, getCompany, getCompanies, destroyCompany, updateCompany, storeCompany, errors
     }
 }

@@ -59,6 +59,7 @@ const deleteCompany = async (id) => {
                         {{ company.website }}
                     </td>
                     <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-nowrap">
+                        <router-link :to="{name: 'companies.edit', params: { id: company.id }}" class="mr-2 inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase">Edit</router-link>
                         <button @click="deleteCompany(company.id)" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase">Delete</button>
                     </td>
                 </tr>
